@@ -6,7 +6,8 @@ public class Life {
 		
 		Board game=new Board();
 		game.setBoard();
-		game.setAlivePlaces();
+		game.setAlivePlacesManually();
+		game.displayBoard();
 		
 		while(true)
 		{

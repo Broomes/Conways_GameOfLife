@@ -1,52 +1,64 @@
 package com.mrbroomes;
 public class Board {
 	
-	char[][] world = new char[40][40];
+	private char[][] world = new char[40][40];
+	private int[][] neighborBoard = new int[40][40];
  
 	/**
-	 * Checks every spot and changes the spots according number of neighbors
+	 * Checks every spot and saves it's number of neighbor in the a neighborBoard[][].
+	 * Then runs the neighborChecker() at the end to update the main world[][].
 	 */
 	public void checkBoard()
 	{
-
-		char[][] tempWorld = world;
-
-		for(int i=0;i<world.length;i++)
+		for(int i=0;i<world.length;i++) {
 			for(int j=0;j<world[i].length;j++) {
-				
+
 				//counter to track the number of neighbors
 				int neighborCount = 0;
-				for(int x=i-1;x<=i+1;x++)
+				for(int x=i-1;x<=i+1;x++) {
 					for(int y=j-1;y<=j+1;y++)
 					{
 						if(x==i&&y==j) {continue;}
-						else{neighborCount+=isAlive(tempWorld, x,y);}
+						else{neighborCount+=isAlive(x,y);}
 					}
-				
-				if(tempWorld[i][j]=='*')
+				}
+				neighborBoard[i][j]= neighborCount;
+
+			}
+		}
+		neighborChecker();
+	}
+
+	/**
+	 * method checks neighborBoard[][] and applies the game's rules to the main world[][]
+	 */
+	public void neighborChecker() {
+
+		for(int i=0;i<world.length;i++) {
+			for(int j=0;j<world[i].length;j++) {
+
+				if(world[i][j]=='*')
 				{
-					if(neighborCount<2||neighborCount>3) {tempWorld[i][j]= '.';}
-					if(neighborCount == 2||neighborCount == 3) {tempWorld[i][j]= '*';}
+					if(neighborBoard[i][j]<2||neighborBoard[i][j]>3) {world[i][j]= '.';}
+					if(neighborBoard[i][j] == 2||neighborBoard[i][j] == 3) {world[i][j]= '*';}
 				}
 				else{
-					if(neighborCount==3) {tempWorld[i][j]= '*';}
-				}	
+					if(neighborBoard[i][j]==3) {world[i][j]= '*';}
+				}
 			}
-
-		world = tempWorld;
+		}
 	}
 
 	/**
 	 * Checks whether a cell is alive or dead / if within game bounds.
-	 * @param mat board passed in
 	 * @param i current row
 	 * @param j current column
 	 * @return 0 if no neighbor, 1 if a neighbor
 	 */
-	private int isAlive(char[][] tempWord, int i, int j){
-		if(i<0||j<0||i==tempWord.length||j==tempWord[0].length)
+	private int isAlive(int i, int j){
+		if(i<0||j<0||i==world.length||j==world[0].length)
 			return 0;
-		if(tempWord[i][j]=='*')
+		if(world[i][j]=='*')
 			return 1;
 		return 0;
 	}
@@ -65,7 +77,7 @@ public class Board {
 	/**
 	 * This method manually sets alive spots on the board.
 	 */
-	public void setAlivePlaces()
+	public void setAlivePlacesManually()
 	{
 		world[30][20]='*';
 		world[30][21]='*';
@@ -84,7 +96,7 @@ public class Board {
 		world[30][34]='*';
 		world[10][35]='*';
 		world[30][36]='*';
-		
+
 	}
 
 	/**
@@ -97,6 +109,7 @@ public class Board {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 	
 	/**
