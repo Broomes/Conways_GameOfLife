@@ -1,6 +1,9 @@
 package com.mrbroomes;
 
-
+/**
+ * @author Granville Broomes
+ * @version 1.0
+ */
 public class Life {
 	public static void main(String[] args) {
 		

@@ -1,4 +1,6 @@
 package com.mrbroomes;
+
+
 public class Board {
 	
 	private char[][] world = new char[40][40];
@@ -10,19 +12,20 @@ public class Board {
 	 */
 	public void checkBoard()
 	{
-		for(int i=0;i<world.length;i++) {
-			for(int j=0;j<world[i].length;j++) {
+		for(int row=0;row<world.length;row++) {
+			for(int col=0;col<world[row].length;col++) {
 
 				//counter to track the number of neighbors
 				int neighborCount = 0;
-				for(int x=i-1;x<=i+1;x++) {
-					for(int y=j-1;y<=j+1;y++)
+				//nested for loop to check neighbors and skip the center so it doesn't count itself
+				for(int x=row-1;x<=row+1;x++) {
+					for(int y=col-1;y<=col+1;y++)
 					{
-						if(x==i&&y==j) {continue;}
+						if(x==row&&y==col) {continue;}
 						else{neighborCount+=isAlive(x,y);}
 					}
 				}
-				neighborBoard[i][j]= neighborCount;
+				neighborBoard[row][col]= neighborCount;
 
 			}
 		}
@@ -32,7 +35,7 @@ public class Board {
 	/**
 	 * method checks neighborBoard[][] and applies the game's rules to the main world[][]
 	 */
-	public void neighborChecker() {
+	private void neighborChecker() {
 
 		for(int i=0;i<world.length;i++) {
 			for(int j=0;j<world[i].length;j++) {
@@ -67,10 +70,10 @@ public class Board {
 	 * This method sets the entire board to dead.
 	 */
 	public void setBoard() {
-		for(int i=0;i<world.length;i++)
-		for(int j=0;j<world[i].length;j++)
-		{
-				world[i][j]='.';
+		for(int i=0;i<world.length;i++) {
+			for (int j = 0; j < world[i].length; j++) {
+				world[i][j] = '.';
+			}
 		}
 	}
 	
@@ -103,9 +106,9 @@ public class Board {
 	 * prints the entire 2d array to console.
 	 */
 	public void displayBoard() {
-		for(int i = 0; i < world.length; i++) {
-			for(int j = 0; j < world[i].length; j++) {
-				System.out.print(world[i][j]);
+		for(char[] row: world) {
+			for(char spot: row) {
+				System.out.print(spot);
 			}
 			System.out.println();
 		}
